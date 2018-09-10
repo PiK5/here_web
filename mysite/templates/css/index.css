@@ -1,0 +1,108 @@
+body
+{
+	margin: 0;
+	font-family: Arial;
+	color: white;
+}
+
+#map, #other
+{
+	position:absolute;
+	width: 50%;
+	height: 100%;
+}
+
+#other
+{
+	left:50%;
+	background-color: #1f262a;
+}
+
+#action
+{
+	margin-top: 15%;
+	width: 90%;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#make_action_div
+{
+	
+	margin-top: 40px;
+	float:left;
+	margin-left: 10%;
+	width: 30%;
+	text-align:center;
+	font-size: 18px;
+}
+
+#icon-right_div
+{
+	text-align:center;
+	margin-top: 40px;
+	float: left;
+	width:18%;
+}
+
+#localization_div
+{
+	margin-top: 30px;
+	float:left;
+	width: 30%;
+	text-align:center;
+}
+
+#localization_icon
+{
+	float: left;
+	width: 40px;
+	height: 40px;
+	text-decoration:none;
+	/*Icons made by Freepik from Flaticon is licensed by Creative Commons BY 3.0*/
+	background: url('../img/index/location-mark.png') no-repeat 0px 0px;
+}
+
+#localization_xy
+{
+	margin-top:2px;
+	margin-left: 10px;
+	width: 120px;
+	float:left;	
+}
+
+#button1, #button2, #button3
+{
+	background-color: #1f262a;
+	color: white;
+	padding: 10px;
+	margin-top:100px;
+	margin-left: 30%;
+	width: 40%;
+	border: 2px solid white;
+	border-radius: 10px;
+	text-align:center;
+	cursor: pointer;
+	visibility: hidden;
+	opacity:0;
+	transition:visibility 0s linear 1.5s,opacity 1.5s linear;
+	outline: none;
+}
+
+#button2, #button3
+{
+	margin-top:20px;
+}
+
+#button1:hover, #button2:hover, #button3:hover
+{
+	-webkit-box-shadow: 0px 0px 5px 2px rgba(204,204,204,0.9);
+	-moz-box-shadow: 0px 0px 15px 2px rgba(204,204,204,0.9);
+	box-shadow: 0px 0px 5px 2px rgba(204,204,204,0.9);
+}
+
+
+
+
+

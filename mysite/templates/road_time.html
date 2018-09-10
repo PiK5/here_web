@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+
+<head>
+	<meta charset = "UTF-8" >
+	<title>HERE</title>
+	<meta name = "title" content = "Here maps" />
+	<meta name = "description" content = "Here maps" />
+	<meta name = "keywords" content = "maps, here, API, traffic, roads" />
+	<meta name = "author" content = "PK" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	
+	<!--[if lt IE 9]>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<![endif]-->
+	
+	{% load static %}
+
+	<link rel="stylesheet" href="{% static 'css/road_time.css' %}"  />
+	<link rel="stylesheet"  href="{% static 'img/index/fontello-309fd563/css/fontello.css' %}" />
+
+	<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1533195059" />
+	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+		
+		  
+</head>
+
+<body>
+
+  <div id="map" >
+  </div>
+  <div id="other">
+	Road Time
+	<div id='action'>
+		<div id='make_action_div'>
+			Your location
+		</div>
+		<div id='icon-right_div'>
+			<i class='icon-right'></i>
+		</div>
+		<div id='localization_div'>
+			<div id='localization_icon'></div>
+			<p id='localization_xy'>Lat: {{lat}}  Long: {{lon}}</p>
+		</div>
+	</div>
+
+		
+  </div>
+
+<script  type="text/javascript" charset="UTF-8" >
+
+
+//Step 1: initialize communication with the platform
+var platform = new H.service.Platform
+({
+  app_id: 'Xj4mJrdpdlOSv9ptLj1y',
+  app_code: 'qWgr0hEXXUHWkTxsQ4MODQ',
+  useHTTPS: true
+});
+
+//map settings
+var pixelRatio = window.devicePixelRatio || 1;
+var defaultLayers = platform.createDefaultLayers({
+  tileSize: pixelRatio === 1 ? 256 : 512,
+  ppi: pixelRatio === 1 ? undefined : 320
+});
+var map = new H.Map(
+document.getElementById('map'),
+defaultLayers.normal.map, {pixelRatio: pixelRatio});
+var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+// Create the default UI:
+var ui = H.ui.UI.createDefault(map, defaultLayers);
+var mapSettings = ui.getControl('mapsettings');
+mapSettings.setAlignment('top-right');
+
+//map parameters
+function moveMapToPlace(map){
+  map.setCenter({lat:{{lat}}, lng:{{lon}}});
+  map.setZoom(12);
+}
+moveMapToPlace(map);
+
+var icon = new H.map.Icon("{% static 'img/index/placeholder.png' %}");
+var Marker = new H.map.Marker({lat:{{lat}}, lng:{{lon}}},{ icon: icon });
+Marker.id = 'marker_id';
+map.addObject(Marker);
+
+
+</script>
+</body>
+
+</html>
