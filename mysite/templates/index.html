@@ -22,12 +22,14 @@
 	<link rel="stylesheet" href="{% static 'img/index/fontello-309fd563/css/fontello.css' %}" />
 
 	<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1533195059" />
+	<link rel="stylesheet" type="text/css" href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+	
 	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
 	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
 	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
 	<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
-		
-		  
+	<script type="text/javascript" charset="UTF-8" src="http://js.api.here.com/v3/3.0/mapsjs-places.js"></script>
+			  
 </head>
 
 <body>
@@ -36,6 +38,10 @@
   </div>
   <div id="other">
 	<div id='action'>
+		<div id='search'>
+			Find Your Place
+			<input id='search_place' type="text">
+		</div>
 		<div id='make_action_div'>
 			Choose Your Location 
 		</div>
@@ -48,19 +54,19 @@
 		</div>
 	</div>
 
-	<form name = "myForm" action="/route_map" method="POST" onsubmit="return sendxy()"> 
+	<form name = "myForm" action="/route_map" target='_blank' method="POST" onsubmit="return sendxy()"> 
 		{% csrf_token %}
 		<button id="button1"  name='xy' type="submit">
 			Go to route map
 		</button>
 	</form>
-	<form name = "myForm1" action="/road_time" method="POST" onsubmit="return sendxy1()"> 
+	<form name = "myForm1" action="/road_time" target='_blank' method="POST" onsubmit="return sendxy1()"> 
 		{% csrf_token %}
 		<button id="button2"  name='xy' type="submit">
 			Go to road time
 		</button>
 	</form>
-	<form name = "myForm2" action="/POI" method="POST" onsubmit="return sendxy2()"> 
+	<form name = "myForm2" action="/POI" target='_blank' method="POST" onsubmit="return sendxy2()"> 
 		{% csrf_token %}
 		<button id="button3"  name='xy' type="submit">
 			Go to POI
@@ -70,6 +76,7 @@
 
 <script  type="text/javascript" charset="UTF-8" >
 
+//navigation button settings
 function sendxy() 
 {
 	var coordinates = document.getElementById("localization_xy").textContent;
@@ -86,7 +93,7 @@ function sendxy2()
 	document.forms["myForm2"]["xy"].value = coordinates;
 }
 
-//Step 1: initialize communication with the platform
+//initialize communication with the platform
 var platform = new H.service.Platform
 ({
   app_id: 'Xj4mJrdpdlOSv9ptLj1y',
@@ -151,6 +158,55 @@ function setUpClickListener(map)
   });
 }
 setUpClickListener(map);
+
+
+
+// Create the parameters for the geocoding request
+document.getElementById('search_place').addEventListener('blur', function (evt) 
+{
+var where = document.getElementById('search_place').value;
+var geocodingParams = {
+    searchText: where
+  	};
+
+// Define a callback function to process the geocoding response
+var onResult = function(result) {
+  var locations = result.Response.View[0].Result,
+    position,
+    marker;
+  // Add a marker for each location found
+  for (i = 0;  i < locations.length; i++) {
+  position = {
+    lat: locations[i].Location.DisplayPosition.Latitude,
+    lng: locations[i].Location.DisplayPosition.Longitude
+  	};
+ //map parameters
+function moveMapToPlace(map){
+  map.setCenter(position);
+  map.setZoom(12);
+	}
+	moveMapToPlace(map);
+  }
+	};
+	if (where=='')
+	{
+	//map parameters
+	function moveMapToPlace(map){
+  map.setCenter({lat:52.1897, lng:19.1859});
+  map.setZoom(6);
+	}
+	moveMapToPlace(map);
+	}
+
+// Get an instance of the geocoding service:
+var geocoder = platform.getGeocodingService();
+// Call the geocode method with the geocoding parameters,
+// the callback and an error callback function (called if a
+// communication error occurs):
+geocoder.geocode(geocodingParams, onResult, function(e) {
+  alert(e);
+	});
+});
 
 </script>
 </body>
